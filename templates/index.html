@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Favorite Links</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            color: #2563eb;
+        }
+
+        .form-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+        }
+
+        .content-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .content-item a {
+            color: #2563eb;
+            overflow-wrap: anywhere;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .date {
+            color: #888;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>My Favorite Links</h1>
+
+    <p>Save your favorite articles and websites.</p>
+
+    <!-- Create Form -->
+    <form action="/create" method="POST" class="form-container">
+
+        <input
+            type="url"
+            name="links"
+            placeholder="Enter website URL..."
+            required
+        >
+
+        <button type="submit">
+            Save Link
+        </button>
+
+    </form>
+
+    <h2>My Collections</h2>
+
+    {% for content in contents %}
+
+        <div class="content-item">
+
+            <div>
+                <a
+                    href="{{ content['links'] }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {{ content['links'] }}
+                </a>
+
+                <div class="date">
+                    Saved at: {{ content['created_at'] }}
+                </div>
+            </div>
+
+            <form
+                action="/delete/{{ content['id'] }}"
+                method="POST"
+                onsubmit="return confirm('Delete this link?')"
+            >
+                <button type="submit" class="delete-btn">
+                    Delete
+                </button>
+            </form>
+
+        </div>
+
+    {% else %}
+
+        <p>No favorite links yet.</p>
+
+    {% endfor %}
+
+</body>
+</html>
